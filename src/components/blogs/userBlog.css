@@ -1,0 +1,21 @@
+.user-blog{
+    height:350px;
+    width:350px;
+    border:1px solid black;
+    box-shadow: 5px 5px 10px rgb(97, 138, 228)
+    ,-5px -5px 10px rgb(78, 99, 219);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap:1rem;
+    margin: 1rem;
+}
+
+.user-blog img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}

@@ -1,0 +1,141 @@
+.login{
+    margin: 1rem auto;
+    display: flex;
+    align-items:center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    border:1px solid blue;
+    border-radius: 10px;
+    gap:1rem;
+    min-height: 50vh;
+    padding: 10px;
+    width:60%;
+    min-width: 380px;
+    box-shadow: 2px 2px 3px rgb(21, 19, 131),
+    -2px -2px 3px rgb(47, 96, 187);
+}
+
+.login form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    gap:1rem;
+    min-height: 25vh;
+}
+
+.login form >div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width:80%;
+    
+}
+
+.login form div label{
+    display: block;
+    color: black;
+    font-size: 1.2rem;
+}
+
+.login form div input{
+    display: block;
+    width:70%;
+    padding: 15px 5px;
+    font-size: 1rem;
+    border: none;
+    outline:2px solid blue;
+    border-radius: 20px;
+}
+
+.login form div input:focus{
+    outline:3px solid blue;
+}
+
+.login form .login-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button[type="submit"]{
+    outline:1px solid black;
+    border:1px solid black;
+    width:40%;
+    border-radius: 25px;
+    background-color: rgb(16, 16, 201);
+    padding: 10px 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    margin: 0 auto;
+}
+
+button[type="submit"]:hover{
+    transform: scale(0.98);
+}
+
+.forgot{
+    cursor: pointer;
+    color:blue;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 1.75rem;
+    border: none;
+}
+
+.googleLogin{
+    cursor: pointer;
+    color:blue;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 1.75rem;
+    border: none;
+}
+
+.eye {
+    cursor: pointer;
+}
+
+.down{
+    color: rgb(255, 0, 0);
+}
+
+.up{
+    color: green;
+}
+
+.other-ways{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width:100%;
+    gap:1rem
+}
+
+
+@media screen and (max-width: 768px) {
+    .login form div label{
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .login{
+        width:90%;
+    }
+    .login form >div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:100%;
+    }
+        
+    .login form div input{
+        width:100%;
+        margin-left: 5px;
+    }
+    button[type="submit"]{
+        width:80%;
+    }
+}
