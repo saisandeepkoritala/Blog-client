@@ -113,6 +113,21 @@ button[type="submit"]:hover{
     gap:1rem
 }
 
+@media screen and (max-width: 1920px) {
+    .other-ways{
+        width:100%;
+    }
+    form button[type="submit"]{
+        width:70%;
+        height: 3rem;
+
+    }
+    .login .register{
+        width:70%;
+        height: 3rem;
+    }
+}
+
 
 @media screen and (max-width: 768px) {
     .login form div label{

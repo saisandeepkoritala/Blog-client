@@ -41,6 +41,7 @@
     border-radius: 20px;
     box-shadow: 0px 0px 3px rgb(109, 108, 163);
     padding: 5px;
+    position: relative;
 }
 
 .body textarea{
@@ -92,6 +93,7 @@
     font-size: 1rem;
     margin: 0 auto;
 }
+
 
 .add-body-button{
     border-radius: 100%;
@@ -167,4 +169,85 @@
 
 .add-body-button:hover .need-to-add{
     display: block;
+}
+
+
+.cross-icon{
+    cursor: pointer;
+    position: absolute;
+    top:0;
+    right:5%;
+    border-radius: 100%;
+    padding: 5px;
+    background-color: white;
+    border:none;
+}
+
+.tags{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.tags input{
+    width:75%;
+}
+.tags button{
+    padding: 5px 10px;
+    border-radius: 20px;
+    border:none;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: #599de6;
+    color:white;
+    font-size: 1rem;
+    margin: 0 auto;
+}
+
+
+@media screen and (max-width: 1920px) {
+    .login{
+        min-height: 75vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container{
+        width: 98%;
+        padding: 5px;
+    }
+
+    .body{  
+        width: 100%;
+    }
+
+    .body textarea{
+        width: 90%;
+    }
+
+    .cross-icon{
+        cursor: pointer;
+        position: absolute;
+        top:0;
+        right:0;
+        border-radius: 100%;
+        padding: 5px;
+        background-color: white;
+        border:none;
+    }
+
+    .tags input{
+        width:75%;
+        align-items: flex-start;
+    }
+    
+}
+
+@media screen and (max-width: 476px) {
+    .tags input{
+        width:60%;
+    }
 }

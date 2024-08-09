@@ -9,6 +9,8 @@ import Blog from './components/blogs/blogs';
 import LoginWithGoogle from './components/auth/loginByGoogle/loginGoogle';
 import { useSelector } from 'react-redux';
 import CreateBlogPage from './components/createBlog/createBlogPage';
+import LogOut from './components/logout/logoutPage';
+import BlogOverview from './components/blogs/BlogOverview';
 
 function App() {
 
@@ -23,9 +25,13 @@ function App() {
           <Route path="/register" 
           element={!isUser?<Register />:<Home />} />
           <Route path="/blogs" element={<Blog />} />
+          <Route path="/blog/overview" 
+          element={isUser?<BlogOverview />:<Home />}
+          />
           <Route path="/loginWithGoogle" 
           element={!isUser?<LoginWithGoogle />:<Home />} />
-          <Route path="/create" element={<CreateBlogPage />}/>
+          <Route path="/create" element={isUser?<CreateBlogPage />:<Home />}/>
+          <Route path="/logout" element={isUser?<LogOut />:<Home />} />
         </Routes>
         <SideNavigation />
         <Footer />

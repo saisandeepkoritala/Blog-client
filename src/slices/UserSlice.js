@@ -9,6 +9,7 @@ const userSlice = createSlice({
         userInfo:localStorage.getItem('user-info')
         ? JSON.parse(localStorage.getItem('user-info'))
         : null,
+        blogData:{}
     },
     reducers:{
         setisUser(state,action){
@@ -22,9 +23,12 @@ const userSlice = createSlice({
         setuserInfo(state,action){
             state.userInfo = action.payload;
         },
+        setblogData(state,action){
+            state.blogData = action.payload;
+        }
 
     }
 })
 
 export const UserReducer = userSlice.reducer;
-export const {setisUser, setuserInfo} = userSlice.actions;
+export const {setisUser, setuserInfo, setblogData} = userSlice.actions;

@@ -4,12 +4,32 @@
     import { CiCirclePlus } from "react-icons/ci";
     import { RxCrossCircled } from "react-icons/rx";
     import "./createBlogPage.css";
+    import 'ldrs/lineSpinner';
+
+
 
     const CreateBlogPage = () => {
     const [Title, SetTitle] = useState("");
     const [Bodies, SetBodies] = useState([
-        { text: "", additionalData: "", images: [], imagePreviews: [], imageURLs: [], showFileUpload: true }
+            { text: "", 
+            images: [], 
+            imagePreviews: [], 
+            imageURLs: [], 
+            showFileUpload: true,
+            isUploadingFile: false,
+            fileError: false
+        },
     ]);
+
+
+
+    const stopFileErrorMessage=(index)=>{
+        setTimeout(()=>{
+            const newBodies = [...Bodies];
+            newBodies[index].fileError = false;
+            SetBodies(newBodies);
+        },3000)
+    }
 
     const handleBodyChange = (index, field, value) => {
         const newBodies = [...Bodies];
@@ -18,7 +38,8 @@
     };
 
     const addBody = () => {
-        SetBodies([...Bodies, { text: "", additionalData: "", images: [], imagePreviews: [], imageURLs: [], showFileUpload: true }]);
+        SetBodies([...Bodies, { text: "", images: [], imagePreviews: [], imageURLs: [], showFileUpload: true,isUploadingFile: false,
+            fileError: false }]);
     };
 
     const handleFileSelect = (index, event) => {
@@ -31,6 +52,7 @@
         newBodies[index].showFileUpload = false;
 
         SetBodies(newBodies);
+        console.log("Bodies", Bodies);
     };
 
     const triggerFileInput = (index) => {
@@ -38,11 +60,24 @@
     };
 
     const uploadFiles = async (index) => {
+        if(Bodies[index].images.length === 0){
+            console.log("No files to upload");
+            const newBodies = [...Bodies];
+            newBodies[index].fileError = true;
+            SetBodies(newBodies);
+            stopFileErrorMessage(index);
+        }
+        else{
+        SetIsUploadingFile(true);
         const body = Bodies[index];
         const urls = [...body.imageURLs]; // Retain old URLs
 
+        console.log(body);
+        console.log(urls);
+
         for (let i = 0; i < body.images.length; i++) {
         const imageRef = ref(storage, `multipleFiles/${body.images[i].name}`);
+
         await uploadBytes(imageRef, body.images[i])
             .then(async () => {
             const url = await getDownloadURL(imageRef);
@@ -57,7 +92,11 @@
         const newBodies = [...Bodies];
         newBodies[index].imageURLs = urls;
         newBodies[index].showFileUpload = true;
+        newBodies[index].images = '';
         SetBodies(newBodies);
+        SetIsUploadingFile(false);
+        console.log("Bodies", Bodies);
+        }
     };
 
     const handleRemove = (bodyIndex, imageIndex) => {
@@ -69,6 +108,16 @@
         SetBodies(newBodies);
     };
 
+    const submitBlog = (Title, Bodies) => {
+        console.log("1",Title,"2",Bodies);
+    };
+
+    const handleRemoveBody=(removeBodyId)=>{
+        console.log(removeBodyId);
+        const newBodies = Bodies.filter((body,index) => index !== removeBodyId);
+        SetBodies(newBodies);
+    }
+
     return (
         <div className='container'>
         <div className='title'>
@@ -77,17 +126,27 @@
 
         {Bodies.map((body, index) => (
             <div className='body' key={index}>
+                {index>0 && <div>
+                    <RxCrossCircled 
+                    color="red"
+                    className="cross-icon"
+                    size={36} 
+                    onClick={() => handleRemoveBody(index)} />
+                </div> }   
             <textarea
                 value={body.text}
                 placeholder='Enter Body'
                 onChange={(e) => handleBodyChange(index, 'text', e.target.value)}
             />
+            <div className='tags'>
             <input
                 type="text"
                 value={body.additionalData}
                 placeholder='Enter tags'
                 onChange={(e) => handleBodyChange(index, 'additionalData', e.target.value)}
             />
+            <button>Add tag</button>
+            </div>
 
             <div className="file-input-container">
                 <input
@@ -105,6 +164,8 @@
                 className="upload-image"
                 onClick={() => triggerFileInput(index)}
                 />}
+
+
                 {!body.showFileUpload && <div className="preview-container">
                 {body.imagePreviews.map((url, i) => (
                     <div key={i} className='preview'>
@@ -117,9 +178,23 @@
                 </div>}
             </div>
 
-            <button 
+            {body.showFileUpload ?<button 
                 className="upload-button"
-                onClick={() => uploadFiles(index)}>Upload Selected Images</button>
+                onClick={() => uploadFiles(index)}>
+                Upload
+            </button>:
+                <l-line-spinner
+                size="30"
+                stroke="3"
+                speed="1"
+                color="white" 
+                style={{margin: "0 auto",width:'25%',backgroundColor:'#599de6',borderRadius:'20px',opacity:'0.75'}}
+                ></l-line-spinner>}
+            {body.fileError && 
+            <p 
+            style={{margin: "0 auto",width:'100%',color:'red',textAlign:'center'}}
+            className="error">No file selected</p>
+            }    
 
             <div className="image-list">
                 {body.imageURLs.map((url, i) => (
@@ -135,12 +210,12 @@
             className="add-body-button"
             onClick={addBody}>
                 <CiCirclePlus size={24} />
-                <p className="need-to-add">Need to add more,Click here?</p>
+                <p className="need-to-add">add more?</p>
         </button>
 
         <button
             className="submit-button"
-            onClick={() => console.log(Title, Bodies)}>Submit</button>
+            onClick={() => submitBlog(Title, Bodies)}>Submit</button>
         </div>
     );
     };

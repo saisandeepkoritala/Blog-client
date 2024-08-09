@@ -24,7 +24,7 @@ const Home = () => {
 
             dispatch(setuserInfo({userName,email}));
             localStorage.setItem("user-info",JSON.stringify({email}));
-            console.log(decodedUserData);
+            // console.log(decodedUserData);
 
             if(decodedUserData){
                 dispatch(setisUser(true))

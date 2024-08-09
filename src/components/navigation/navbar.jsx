@@ -16,12 +16,15 @@ const Navbar = () => {
                 <li>
                         <NavLink to="/" onClick={()=>SetopenMenu(!openMenu)}>Home</NavLink>
                 </li>
-                <li>
+                {isUser &&<li>
                         <NavLink to="/create" onClick={()=>SetopenMenu(!openMenu)}>Create</NavLink>
-                </li>
+                </li>}
                 <li>
                         <NavLink to="/blogs" onClick={()=>SetopenMenu(!openMenu)}>Blogs</NavLink>
                 </li>
+                {isUser &&<li>
+                        <NavLink to="/logout" onClick={()=>SetopenMenu(!openMenu)}>Logout</NavLink>
+                </li>}
                 {!isUser && <li>
                     <NavLink to="/login" onClick={()=>SetopenMenu(!openMenu)}>Login</NavLink>
                 </li>}

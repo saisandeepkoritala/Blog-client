@@ -72,11 +72,6 @@ const Login = () => {
 
     };
 
-    const handleLoginWithGoogle=async()=>{
-        const response = await axios.get("http://localhost:5000/api/v1/user/auth/google");
-        console.log(response);
-    }
-
     return (
         <div className='login'>
             <ToastContainer />
@@ -113,6 +108,7 @@ const Login = () => {
 
             <button
                 type="submit"
+                className='register'
                 onClick={() => navigate("/register")}
             >
                 Sign Up
