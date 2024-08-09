@@ -10,6 +10,8 @@
 
     const CreateBlogPage = () => {
     const [Title, SetTitle] = useState("");
+    const [Tags, SetTags] = useState([]);
+    const [Tag,SetTag]=useState("");
     const [Bodies, SetBodies] = useState([
             { text: "", 
             images: [], 
@@ -68,8 +70,9 @@
             stopFileErrorMessage(index);
         }
         else{
-        SetIsUploadingFile(true);
+        
         const body = Bodies[index];
+        console.log(body);
         const urls = [...body.imageURLs]; // Retain old URLs
 
         console.log(body);
@@ -94,7 +97,7 @@
         newBodies[index].showFileUpload = true;
         newBodies[index].images = '';
         SetBodies(newBodies);
-        SetIsUploadingFile(false);
+        
         console.log("Bodies", Bodies);
         }
     };
@@ -118,6 +121,35 @@
         SetBodies(newBodies);
     }
 
+    const addTag =()=>{
+        if(!Tag){
+            return;
+        }
+        SetTags([...Tags,Tag]);
+        SetTag("");
+    }
+
+    const handleRemoveTag=(removeTagId)=>{
+        const newTags = Tags.filter((tag,index) => index !== removeTagId);
+        SetTags(newTags);
+    }
+
+    const handleRemoveUploadedImage=(bodyIndex,imageIndex)=>{
+        console.log("hi")
+        const newBodies = Bodies.filter((body,index) =>{
+            if(index === bodyIndex){
+                body.imageURLs.splice(imageIndex, 1);
+                return body;
+            }
+            else{
+                return body;
+            }
+        })
+
+        SetBodies(newBodies);
+        
+    }
+
     return (
         <div className='container'>
         <div className='title'>
@@ -138,15 +170,6 @@
                 placeholder='Enter Body'
                 onChange={(e) => handleBodyChange(index, 'text', e.target.value)}
             />
-            <div className='tags'>
-            <input
-                type="text"
-                value={body.additionalData}
-                placeholder='Enter tags'
-                onChange={(e) => handleBodyChange(index, 'additionalData', e.target.value)}
-            />
-            <button>Add tag</button>
-            </div>
 
             <div className="file-input-container">
                 <input
@@ -178,7 +201,7 @@
                 </div>}
             </div>
 
-            {body.showFileUpload ?<button 
+            {!body.isUploadingFile ?<button 
                 className="upload-button"
                 onClick={() => uploadFiles(index)}>
                 Upload
@@ -195,11 +218,15 @@
             style={{margin: "0 auto",width:'100%',color:'red',textAlign:'center'}}
             className="error">No file selected</p>
             }    
-
             <div className="image-list">
                 {body.imageURLs.map((url, i) => (
-                <div key={i}>
-                    <img src={url} alt={`Uploaded ${i}`} width={200} />
+                <div key={i} className='image-container'>
+                    <img src={url} 
+                    alt={`Uploaded ${i}`} 
+                    width={200} />
+                    <button className='remove-uploaded-image-button'
+                        onClick={() => handleRemoveUploadedImage(index,i)}
+                    ><RxCrossCircled size={24} /></button>
                 </div>
                 ))}
             </div>
@@ -212,6 +239,29 @@
                 <CiCirclePlus size={24} />
                 <p className="need-to-add">add more?</p>
         </button>
+
+        <form className='tags'>
+            <input
+                type="text"
+                value={Tag}
+                placeholder='Enter tags'
+                onChange={(e) => SetTag(e.target.value)}
+            />
+            <button type="button" onClick={() => addTag(Tag)}>Add tag</button>
+        </form>
+        <div className='tag-container'>
+        {Tags?.map((tag, index) => (
+            <div className='tag' key={index}>
+                {tag}
+                <button 
+                className='remove-tag'
+                onClick={() => handleRemoveTag(index)}
+                >
+                <RxCrossCircled size={20} />
+                </button>
+            </div>
+        ))}
+        </div>
 
         <button
             className="submit-button"
