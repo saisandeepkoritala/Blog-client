@@ -1,6 +1,7 @@
 import React from 'react';
 import './BlogOverview.css'
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 const BlogOverview = () => {
@@ -9,6 +10,8 @@ const BlogOverview = () => {
         blogTitle,userInfo} = useSelector((state) => state?.user);
     
     console.log(blogData,blogTags,blogTitle,userInfo)
+
+    const navigate = useNavigate();
 
     const handleSubmitBlog = async(e) => {
         e.preventDefault();
@@ -22,6 +25,15 @@ const BlogOverview = () => {
         });
 
         console.log(response)
+        if(response.status === 200){
+            navigate("/blogs");
+            localStorage.clear("blog-data");
+            localStorage.clear("blog-tags");
+            localStorage.clear("blog-title");
+        }
+        else{
+            console.log("something went wrong")
+        }
     }
 
     return (
@@ -34,10 +46,12 @@ const BlogOverview = () => {
                     </div>
             })}
             <div className='tags'>
-                {blogTags?.map((item,i)=>{return <div key={i} className='tag'>{item}</div>})}
+                {blogTags?.map((item,i)=>{return <div key={i+100} className='tag'>{item}</div>})}
             </div>
             <div className='post-blog'>
-            <button onClick={handleSubmitBlog}>
+            <button 
+            className='button'
+            onClick={handleSubmitBlog}>
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>Post Blog
                 </button>
             </div>

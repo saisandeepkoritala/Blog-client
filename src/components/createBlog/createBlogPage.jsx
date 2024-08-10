@@ -179,7 +179,7 @@ const CreateBlogPage = () => {
             <input type="text" placeholder='Enter Title' value={Title} onChange={(e) => SetTitle(e.target.value)} />
         </div>
 
-        {Bodies.map((body, index) => (
+        {Bodies?.map((body, index) => (
             <div className='body' key={index}>
                 {index>0 && <div>
                     <RxCrossCircled 

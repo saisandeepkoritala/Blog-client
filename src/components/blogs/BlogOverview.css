@@ -18,7 +18,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 5vh;
+    gap: 1vh;
 }
 
 .blog-overview .blog .text{
@@ -33,7 +33,7 @@
 }
 
 /* From Uiverse.io by barisdogansutcu */ 
-button {
+.button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,12 +56,12 @@ button {
     box-shadow: -4px -2px 16px 0px #ffffff, 4px 2px 16px 0px rgb(95 157 231 / 48%);
     }
     
-    button:hover {
+    .button:hover {
         color: #516d91;
         background-color: #E5EDF5;
         box-shadow: -2px -1px 8px 0px #ffffff, 2px 1px 8px 0px rgb(95 157 231 / 48%);
     }
     
-    button:active {
+    .button:active {
         box-shadow: none;
     }
