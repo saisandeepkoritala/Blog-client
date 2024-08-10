@@ -44,12 +44,11 @@
     position: relative;
 }
 
-.body textarea{
+.body .textarea{
     width: 95%;
     height: 300px;
     padding: 10px;
     border-radius: 20px;
-    border: 1px solid #ccc;
     resize: none;
 }
 
@@ -61,6 +60,7 @@
 }
 
 .body .file-input-container{
+    margin-top:5vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -278,7 +278,7 @@
         width: 100%;
     }
 
-    .body textarea{
+    .body .textarea{
         width: 100%;
     }
 

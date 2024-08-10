@@ -1,14 +1,22 @@
-    import React, { useState } from 'react';
+    import React, { useState,useEffect } from 'react';
     import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
     import { storage } from "../../firebase/FirebaseConfig";
     import { CiCirclePlus } from "react-icons/ci";
     import { RxCrossCircled } from "react-icons/rx";
+    import {useDispatch} from "react-redux";
+    import { setBlogTitle, setBlogTags, setblogData } from '../../store';
+    import {useNavigate} from "react-router-dom";
+    import ReactQuill from 'react-quill';
+    import 'react-quill/dist/quill.snow.css'; 
     import "./createBlogPage.css";
     import 'ldrs/lineSpinner';
 
 
 
-    const CreateBlogPage = () => {
+const CreateBlogPage = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate(); 
     const [Title, SetTitle] = useState("");
     const [Tags, SetTags] = useState([]);
     const [Tag,SetTag]=useState("");
@@ -23,6 +31,16 @@
         },
     ]);
 
+    useEffect(() => {
+        const blogTitle = JSON.parse(localStorage.getItem("blog-title"));
+        const blogData = JSON.parse(localStorage.getItem("blog-data"));
+        const blogTags = JSON.parse(localStorage.getItem("blog-tags"));
+        console.log("1",blogTitle, "2",blogData, "3",blogTags);
+        SetTitle(blogTitle);
+        SetTags(blogTags);
+        SetBodies(blogData);
+    }, []);
+
 
 
     const stopFileErrorMessage=(index)=>{
@@ -32,12 +50,6 @@
             SetBodies(newBodies);
         },3000)
     }
-
-    const handleBodyChange = (index, field, value) => {
-        const newBodies = [...Bodies];
-        newBodies[index][field] = value;
-        SetBodies(newBodies);
-    };
 
     const addBody = () => {
         SetBodies([...Bodies, { text: "", images: [], imagePreviews: [], imageURLs: [], showFileUpload: true,isUploadingFile: false,
@@ -112,7 +124,11 @@
     };
 
     const submitBlog = (Title, Bodies) => {
-        console.log("1",Title,"2",Bodies);
+        console.log("1",Title,"2",Bodies,"3",Tags);
+        dispatch(setBlogTitle(Title));
+        dispatch(setBlogTags(Tags));
+        dispatch(setblogData(Bodies));
+        navigate("/blog/overview")
     };
 
     const handleRemoveBody=(removeBodyId)=>{
@@ -150,6 +166,13 @@
         
     }
 
+    const handleBodyChange = (index, field, value) => {
+        const newBodies = [...Bodies];
+        console.log("newBodies", newBodies);
+        newBodies[index][field] = value;
+        SetBodies(newBodies);
+    };
+
     return (
         <div className='container'>
         <div className='title'>
@@ -164,12 +187,15 @@
                     className="cross-icon"
                     size={36} 
                     onClick={() => handleRemoveBody(index)} />
-                </div> }   
-            <textarea
-                value={body.text}
-                placeholder='Enter Body'
-                onChange={(e) => handleBodyChange(index, 'text', e.target.value)}
-            />
+                </div> }  
+
+
+                <ReactQuill
+                    value={body.text}
+                    onChange={(e) => handleBodyChange(index, "text", e)}
+                    placeholder="Enter Body"
+                    className='textarea'
+                />
 
             <div className="file-input-container">
                 <input
@@ -239,6 +265,7 @@
                 <CiCirclePlus size={24} />
                 <p className="need-to-add">add more?</p>
         </button>
+
 
         <form className='tags'>
             <input

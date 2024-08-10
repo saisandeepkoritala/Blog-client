@@ -16,6 +16,8 @@ const LogoutPage = () => {
         handleLogout()
     }, [])
 
+
+
     return (
         <div>LogoutPage</div>
     )
