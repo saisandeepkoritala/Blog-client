@@ -21,7 +21,7 @@ const Login = () => {
 
     useEffect(() => {
         inputEmailRef.current.focus();
-        axios.get(`http://localhost:5000/api/v1/user/isAlive`)
+        axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/isAlive`)
             .then((res) => {
                 if (res.status === 200) {
                     SetColor("green")
@@ -54,7 +54,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const resp = await axios.post(`http://localhost:5000/api/v1/user/login`, {
+            const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/login`, {
                 email: formData.username,
                 password: formData.password
             })
@@ -122,7 +122,7 @@ const Login = () => {
             </button>
             <a
                 className='googleLogin'
-                href="http://localhost:5000/api/v1/user/auth/google"
+                href={`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/auth/google`}
             >
                 <FcGoogle />
             </a>

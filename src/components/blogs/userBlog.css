@@ -19,3 +19,13 @@
     object-fit: cover;
     border-radius: 10px;
 }
+
+.tags .tag{
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    background-color: #599de6;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}

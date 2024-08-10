@@ -5,7 +5,7 @@ const LogoutPage = () => {
 
     useEffect(() => {
         const handleLogout=async()=>{
-            const resp = await axios.post("http://localhost:5000/api/v1/user/logout",{},{withCredentials:true})
+            const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/logout`,{},{withCredentials:true})
             console.log(resp)
             if(resp.status === 200){
             localStorage.removeItem("user-info");

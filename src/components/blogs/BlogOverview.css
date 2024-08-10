@@ -15,21 +15,24 @@
 
 .blog-overview .blog{
     display: flex;
-    align-items: center;
+    align-items:flex-start;
     justify-content: center;
     flex-direction: column;
     gap: 1vh;
+    width:95%;
 }
 
 .blog-overview .blog .text{
     width: 100%;
     margin-left: 5vh;
+
 }   
 
 .blog-overview .blog img{
     width:50%;
     aspect-ratio: 3/2;
     object-fit: contain;
+    margin-left: 15%;
 }
 
 /* From Uiverse.io by barisdogansutcu */ 

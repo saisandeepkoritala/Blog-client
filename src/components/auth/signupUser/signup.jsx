@@ -82,7 +82,7 @@ function Signup() {
             return notify("Password Criteria Error!")
         }
         else{
-                const response = await axios.post(`http://localhost:5000/api/v1/user/signup`,formData)
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/signup`,formData)
 
                 if(!response.data.error){
                 notify1("Successful SignUp !!")
@@ -100,7 +100,7 @@ function Signup() {
         e.preventDefault();
         if(formData.name && formData.email){
             try{
-                const resp= await axios.post(`http://localhost:5000/api/v1/user/sendCode`,{
+                const resp= await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/sendCode`,{
                     name:formData.name,
                     email:formData.email
                 })
@@ -128,7 +128,7 @@ function Signup() {
         e.preventDefault();
         if(formData.email){
             try{
-                const resp = await axios.post(`http://localhost:5000/api/v1/user/verifyCode`,{
+                const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/verifyCode`,{
                     email:formData.email,
                     code:code
                 })

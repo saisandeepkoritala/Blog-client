@@ -9,13 +9,13 @@ const BlogOverview = () => {
     const {blogData,blogTags,
         blogTitle,userInfo} = useSelector((state) => state?.user);
     
-    console.log(blogData,blogTags,blogTitle,userInfo)
+    // console.log(blogData,blogTags,blogTitle,userInfo)
 
     const navigate = useNavigate();
 
     const handleSubmitBlog = async(e) => {
         e.preventDefault();
-        const response = await axios.post("http://localhost:5000/api/v1/user/createBlog",{
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/createBlog`,{
             title:blogTitle,
             tags:blogTags,
             body:blogData,

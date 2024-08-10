@@ -1,4 +1,4 @@
-    import React, { useState,useEffect } from 'react';
+    import { useState,useEffect } from 'react';
     import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
     import { storage } from "../../firebase/FirebaseConfig";
     import { CiCirclePlus } from "react-icons/ci";
@@ -6,6 +6,7 @@
     import {useDispatch} from "react-redux";
     import { setBlogTitle, setBlogTags, setblogData } from '../../store';
     import {useNavigate} from "react-router-dom";
+
     import ReactQuill from 'react-quill';
     import 'react-quill/dist/quill.snow.css'; 
     import "./createBlogPage.css";
@@ -32,9 +33,18 @@ const CreateBlogPage = () => {
     ]);
 
     useEffect(() => {
-        const blogTitle = JSON.parse(localStorage.getItem("blog-title"));
-        const blogData = JSON.parse(localStorage.getItem("blog-data"));
-        const blogTags = JSON.parse(localStorage.getItem("blog-tags"));
+        const blogTitle = JSON.parse(localStorage.getItem("blog-title")) || "";
+        const blogData = JSON.parse(localStorage.getItem("blog-data")) || [
+            { text: "", 
+            images: [], 
+            imagePreviews: [], 
+            imageURLs: [], 
+            showFileUpload: true,
+            isUploadingFile: false,
+            fileError: false
+        },
+    ];
+        const blogTags = JSON.parse(localStorage.getItem("blog-tags")) || [];
         console.log("1",blogTitle, "2",blogData, "3",blogTags);
         SetTitle(blogTitle);
         SetTags(blogTags);
@@ -52,7 +62,11 @@ const CreateBlogPage = () => {
     }
 
     const addBody = () => {
-        SetBodies([...Bodies, { text: "", images: [], imagePreviews: [], imageURLs: [], showFileUpload: true,isUploadingFile: false,
+        SetBodies([...Bodies, { text: "", images: [], 
+            imagePreviews: [],
+            imageURLs: [], 
+            showFileUpload: true,
+            isUploadingFile: false,
             fileError: false }]);
     };
 
@@ -82,10 +96,9 @@ const CreateBlogPage = () => {
             stopFileErrorMessage(index);
         }
         else{
-        
         const body = Bodies[index];
         console.log(body);
-        const urls = [...body.imageURLs]; // Retain old URLs
+        const urls = [...body.imageURLs];
 
         console.log(body);
         console.log(urls);
@@ -109,7 +122,6 @@ const CreateBlogPage = () => {
         newBodies[index].showFileUpload = true;
         newBodies[index].images = '';
         SetBodies(newBodies);
-        
         console.log("Bodies", Bodies);
         }
     };
@@ -191,7 +203,7 @@ const CreateBlogPage = () => {
 
 
                 <ReactQuill
-                    value={body.text}
+                    value={body.text || ""}
                     onChange={(e) => handleBodyChange(index, "text", e)}
                     placeholder="Enter Body"
                     className='textarea'
@@ -239,6 +251,7 @@ const CreateBlogPage = () => {
                 color="white" 
                 style={{margin: "0 auto",width:'25%',backgroundColor:'#599de6',borderRadius:'20px',opacity:'0.75'}}
                 ></l-line-spinner>}
+                
             {body.fileError && 
             <p 
             style={{margin: "0 auto",width:'100%',color:'red',textAlign:'center'}}
