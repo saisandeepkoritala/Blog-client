@@ -12,6 +12,8 @@ import CreateBlogPage from './components/createBlog/createBlogPage';
 import LogOut from './components/logout/logoutPage';
 import BlogOverview from './components/blogs/BlogOverview';
 import FullBlog from './components/blogs/FullBlog';
+import ForgotPassword from './components/password/ForgotPassword';
+import LostPage from './components/lost/LostPage';
 
 function App() {
 
@@ -34,6 +36,8 @@ function App() {
           <Route path="/create" element={isUser?<CreateBlogPage />:<Home />}/>
           <Route path="/blog/:id" element={<FullBlog />} />
           <Route path="/logout" element={isUser?<LogOut />:<Home />} />
+          <Route path="forgotPassword" element={<ForgotPassword />} />
+          <Route path="*" element={<LostPage />} />
         </Routes>
         <SideNavigation />
         <Footer />

@@ -13,6 +13,7 @@
     min-width: 380px;
     box-shadow: 2px 2px 3px rgb(21, 19, 131),
     -2px -2px 3px rgb(47, 96, 187);
+    position: relative;
 }
 
 .login form{
@@ -111,6 +112,19 @@ button[type="submit"]:hover{
     justify-content: space-evenly;
     width:100%;
     gap:1rem
+}
+
+a{
+    text-decoration: none;
+}
+.googleLogin{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+.p-tag{
+    font-size: 0.75rem;
 }
 
 @media screen and (max-width: 1920px) {

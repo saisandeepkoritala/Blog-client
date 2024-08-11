@@ -14,21 +14,41 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputEmailRef = useRef();
-    const [Color, SetColor] = useState("");
+    const [Color, SetColor] = useState("red");
 
     axios.defaults.withCredentials = true; 
     // important for setting up cookies.
 
     useEffect(() => {
         inputEmailRef.current.focus();
-        axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/isAlive`)
-            .then((res) => {
-                if (res.status === 200) {
-                    SetColor("green")
-                }
-            })
-            .catch((err) => console.log(err))
-    }, []);
+
+        const isServerAlive = async()=>{
+            try{
+                axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/isAlive`)
+                .then((res) => {
+                    if (res.status === 200) {
+                        SetColor("green")
+                        // console.log("server is alive",Color);
+                    }
+                })
+                .catch((err) => console.log("error"))
+            }
+            catch(error){
+                SetColor("red");
+            }
+        }
+
+        let interval = null;
+
+        if(Color==="red"){
+            interval = setInterval(() => {
+                isServerAlive();
+            },1000)
+        }
+
+        return () => clearInterval(interval);
+
+    }, [Color]);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -119,14 +139,17 @@ const Login = () => {
                 onClick={() => navigate("/forgotPassword")}
             >
                 <FiHelpCircle />
+                <p className='p-tag'>Forgot Password</p>
             </button>
             <a
                 className='googleLogin'
                 href={`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/auth/google`}
             >
                 <FcGoogle />
+                <p className='p-tag'>Login with Google</p>
             </a>
             </div>
+            <ColoredCircle color={Color} className='circle'/>
         </div>
     );
 };
