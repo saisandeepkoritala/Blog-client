@@ -10,7 +10,7 @@ const FullBlog = () => {
     console.log(id)
 
     const [blog,setBlog] = useState({})
-
+    axios.defaults.withCredentials = true;
     useEffect(() => {
         const getData = async() => {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/blog/${id}`,{withCredentials:true})

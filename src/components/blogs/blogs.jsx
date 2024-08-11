@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Blogs = () => {
-
+    axios.defaults.withCredentials = true;
     const [blogs,setBlogs] = useState([]);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const Blogs = () => {
                 return (<div dangerouslySetInnerHTML={{__html: item.text.substring(0,200)+", see more..."}} className='text' key={i}/>)})}</div>
             <p className='author'><strong>By </strong> {item.email}</p>
             <p className='date'><strong>Posted on</strong> {item.createdAt.substring(0,10)}</p>
-            <p className='date'><strong>Posted at</strong> {dateStr.toISOString().substring(11,16)}</p>
+            <p className='date'><strong>Posted at</strong> {dateStr.toTimeString().substring(0,5)}</p>
             <div className='show-tags'>{item.tags.map((item)=>(<div className='tag' key={item}>{item}</div>))}</div>
         </Link>
     })

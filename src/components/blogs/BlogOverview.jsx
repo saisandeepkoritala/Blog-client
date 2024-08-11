@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 const BlogOverview = () => {
-
+    axios.defaults.withCredentials = true;
     const {blogData,blogTags,
         blogTitle,userInfo} = useSelector((state) => state?.user);
     
@@ -27,9 +27,9 @@ const BlogOverview = () => {
         console.log(response)
         if(response.status === 200){
             navigate("/blogs");
-            localStorage.clear("blog-data");
-            localStorage.clear("blog-tags");
-            localStorage.clear("blog-title");
+            localStorage.removeItem("blog-data");
+            localStorage.removeItem("blog-tags");
+            localStorage.removeItem("blog-title");
         }
         else{
             console.log("something went wrong")

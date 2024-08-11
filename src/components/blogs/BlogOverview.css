@@ -19,7 +19,7 @@
     justify-content: center;
     flex-direction: column;
     gap: 1vh;
-    width:95%;
+    width:100%;
 }
 
 .blog-overview .blog .text{
@@ -29,8 +29,7 @@
 }   
 
 .blog-overview .blog img{
-    width:50%;
-    aspect-ratio: 3/2;
+    width:75%;
     object-fit: contain;
     margin-left: 15%;
 }
@@ -67,4 +66,22 @@
     
     .button:active {
         box-shadow: none;
+    }
+
+    .blog-overview .tags{
+        margin: 0 auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        .blog-overview{
+            margin: 0;
+        }
+        .blog-overview .blog{
+            width: 95%;
+            margin: 0;
+        }
+
+        .blog-overview .blog .text{
+            margin: 0;
+        }
     }

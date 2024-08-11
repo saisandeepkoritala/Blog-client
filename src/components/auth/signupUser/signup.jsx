@@ -88,7 +88,7 @@ function Signup() {
                 notify1("Successful SignUp !!")
                 // dispatch(setisUser(true));
                 localStorage.setItem("user-info",JSON.stringify(formData.name))
-                navigate("/home");
+                navigate("/login");
                 }
                 else{
                     notify("Error,sign up again")

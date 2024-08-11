@@ -14,7 +14,7 @@ const UserBlog = (blog) => {
                         <div dangerouslySetInnerHTML={{__html: item.text}} className='text'/>
                         {blog.body[i]?.imageURLs?.map((item)=>{
                             console.log(item)
-                            return <img src={item} key={item} width={250}/>} )}
+                            return <img src={item} key={item} width={300}/>} )}
                     </div>
             })}
             <div className='tags'>
