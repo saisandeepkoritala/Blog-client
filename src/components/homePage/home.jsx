@@ -3,6 +3,7 @@ import { setisUser,setuserInfo } from '../../store';
 import { useSelector,useDispatch } from 'react-redux';
 import queryString from 'query-string';
 import React,{useState,useEffect} from 'react';
+import axios from 'axios';
 import "./home.css";
 
 const Home = () => {
@@ -24,7 +25,20 @@ const Home = () => {
 
             dispatch(setuserInfo({userName,email}));
             localStorage.setItem("user-info",JSON.stringify({email}));
-            // console.log(decodedUserData);
+
+            console.log(decodedUserData.email);
+            console.log(decodedUserData.displayName);
+            console.log(decodedUserData.picture);
+
+            // const response =axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/signup`,{
+            //     name:decodedUserData.displayName,
+            //     email:decodedUserData.email,
+            //     picture:decodedUserData.picture,
+            //     accountType:'google'
+            // })
+
+            // console.log(response);
+
 
             if(decodedUserData){
                 dispatch(setisUser(true))

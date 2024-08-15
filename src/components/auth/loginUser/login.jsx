@@ -78,6 +78,7 @@ const Login = () => {
                 email: formData.username,
                 password: formData.password
             })
+            console.log(resp?.data?.data?.user?.email)
             if (resp.status === 200) {
                 dispatch(setuserInfo(resp?.data?.data?.user?.email))
                 dispatch(setisUser(true))

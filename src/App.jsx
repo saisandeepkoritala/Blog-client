@@ -14,6 +14,7 @@ import BlogOverview from './components/blogs/BlogOverview';
 import FullBlog from './components/blogs/FullBlog';
 import ForgotPassword from './components/password/ForgotPassword';
 import LostPage from './components/lost/LostPage';
+import PasswordResetSuccess from './components/password/PasswordResetSuccess';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/blog/:id" element={<FullBlog />} />
           <Route path="/logout" element={isUser?<LogOut />:<Home />} />
           <Route path="forgotPassword" element={<ForgotPassword />} />
+          <Route path="/passwordResetSuccess" element={<PasswordResetSuccess />} />
           <Route path="*" element={<LostPage />} />
         </Routes>
         <SideNavigation />

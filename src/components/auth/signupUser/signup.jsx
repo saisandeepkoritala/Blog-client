@@ -28,6 +28,7 @@ function Signup() {
         email: '',
         password: '',
         passwordConfirm: '',
+        accountType:'normal'
     });
 
     const notify=(msg)=>{

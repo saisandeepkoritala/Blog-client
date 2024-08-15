@@ -19,7 +19,7 @@ const BlogOverview = () => {
             title:blogTitle,
             tags:blogTags,
             body:blogData,
-            email:userInfo?.email
+            email:userInfo
         },{
             withCredentials:true
         });
