@@ -7,10 +7,14 @@ const LogoutPage = () => {
         const handleLogout=async()=>{
             const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/logout`,{},{withCredentials:true})
             console.log(resp)
-            if(resp.status === 200){
+
+            // if(resp.status === 200){
+            //     localStorage.removeItem("user-info");
+            //     window.location.href = "/";
+            // }
             localStorage.removeItem("user-info");
-            window.location.href = "/";
-            }
+                window.location.href = "/";
+
         }
 
         handleLogout()

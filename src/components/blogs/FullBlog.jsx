@@ -13,9 +13,15 @@ const FullBlog = () => {
     axios.defaults.withCredentials = true;
     useEffect(() => {
         const getData = async() => {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/blog/${id}`,{withCredentials:true})
-            // console.log(response)
-            setBlog(response?.data?.blog)
+            try{
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/blog/${id}`,{withCredentials:true})
+                // console.log(response)
+                setBlog(response?.data?.blog)
+            }
+
+            catch(error){
+                console.log(error)
+            }
         }
 
         getData()

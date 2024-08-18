@@ -59,7 +59,7 @@ const Login = () => {
         toast.info(msg, {
             progressStyle: { background: "red" },
             theme: 'colored',
-            style: { background: "black", color: "red" },
+            style: { background: "white", color: "red" },
         });
     }
 
