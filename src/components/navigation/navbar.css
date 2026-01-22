@@ -61,6 +61,31 @@ nav .menu span{
     border-radius: 0.2rem;
 }
 
+.dropdown-container{
+    position: relative;
+}
+
+.dropdown{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top:3.4rem;
+    left:0;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color:#0144fd;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    color: black;
+    z-index: 10;
+}
+
+.dropdown li{
+    width: 90%;
+    color: black;
+}
+
 
 @media (max-width:768px){
     nav{
@@ -101,6 +126,16 @@ nav .menu span{
 
     nav .cross span:nth-child(2){
         transform: rotate(-45deg) translate(9px, -6px);
+    }
+
+    .dropdown-container{
+        position: relative;
+    }
+    .dropdown{
+        width:90%;
+        position: absolute;
+        top:100%;
+        left:5%;
     }
 
 }

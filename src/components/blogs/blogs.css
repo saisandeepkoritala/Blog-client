@@ -54,6 +54,11 @@
     height: 75vh;
 }
 
+/* In your blogs.css or a separate CSS file */
+.toast-container {
+    width: 50%;
+}
+
 @media screen and (max-width: 768px) {
     .blogs{
         margin-left: 0;
@@ -61,4 +66,14 @@
     .allBlogs{
         width: 100%;
     }
+    .toast-container {
+        width: 50%; /* or any other width for larger screens */
+    }
 }
+
+@media screen and (max-width: 468px) {
+    .toast-container {
+        width: 50%; /* or any other width for larger screens */
+    }
+}
+

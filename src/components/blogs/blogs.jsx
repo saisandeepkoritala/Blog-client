@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { ColorRing } from 'react-loader-spinner';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast} from 'react-toastify';
 // Fetch function that returns both data and status code
 const fetchBlogs = async () => {
     try {
@@ -132,7 +130,7 @@ const Blogs = () => {
     return (
         <div className='blogs'>
             {cardsSection}
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     );
 }

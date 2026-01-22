@@ -111,6 +111,7 @@ const CreateBlogPage = () => {
             const url = await getDownloadURL(imageRef);
             urls.push(url);
             console.log("Success");
+            console.log("URL", url);
             })
             .catch(error => {
             console.log("Error", error);

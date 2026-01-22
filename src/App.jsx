@@ -15,6 +15,9 @@ import FullBlog from './components/blogs/FullBlog';
 import ForgotPassword from './components/password/ForgotPassword';
 import LostPage from './components/lost/LostPage';
 import PasswordResetSuccess from './components/password/PasswordResetSuccess';
+import MyBlogs from './components/blogs/MyBlogs';
+import About from './components/profile/About';
+import UpdatePassword from './components/password/UpdatePassword';
 
 function App() {
 
@@ -35,6 +38,9 @@ function App() {
           <Route path="/loginWithGoogle" 
           element={!isUser?<LoginWithGoogle />:<Home />} />
           <Route path="/create" element={isUser?<CreateBlogPage />:<Home />}/>
+          <Route path="/about" element={isUser?<About />:<Home />}/>
+          <Route path="/update-password" element={isUser?<UpdatePassword />:<Home />}/>
+          <Route path="/my-blogs" element={isUser?<MyBlogs />:<Home />}/>
           <Route path="/blog/:id" element={<FullBlog />} />
           <Route path="/logout" element={isUser?<LogOut />:<Home />} />
           <Route path="forgotPassword" element={<ForgotPassword />} />

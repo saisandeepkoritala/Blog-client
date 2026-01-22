@@ -24,12 +24,13 @@ const BlogOverview = () => {
             withCredentials:true
         });
 
-        console.log(response)
+        console.log("hiiiiiiiiii",response)
         if(response.status === 200){
             navigate("/blogs");
             localStorage.removeItem("blog-data");
             localStorage.removeItem("blog-tags");
             localStorage.removeItem("blog-title");
+            console.log("blog posted successfully");
         }
         else{
             console.log("something went wrong")

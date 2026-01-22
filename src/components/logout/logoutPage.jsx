@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
 import axios from 'axios';
+import './Logout.css';
 
 const LogoutPage = () => {
     axios.defaults.withCredentials = true;
@@ -12,6 +13,7 @@ const LogoutPage = () => {
             //     localStorage.removeItem("user-info");
             //     window.location.href = "/";
             // }
+            // works only in real time,not in our dummy apps
             localStorage.removeItem("user-info");
                 window.location.href = "/";
 
@@ -23,7 +25,13 @@ const LogoutPage = () => {
 
 
     return (
-        <div>LogoutPage</div>
+        <div className='logout'>
+            <div className='logout-page'>
+                <h3>You have been logged out</h3>
+                <p>Please log back in </p>
+                <button onClick={() => window.location.href = "/"}>ok</button>
+            </div>
+        </div>
     )
 }
 
