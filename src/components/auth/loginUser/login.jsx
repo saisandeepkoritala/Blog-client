@@ -6,151 +6,155 @@ import ColoredCircle from '../../active/ColoredCircle';
 import { ToastContainer, toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { FiHelpCircle } from "react-icons/fi";
-import "./login.css";
 import axios from "axios";
-
+import "./login.css";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputEmailRef = useRef();
-    const [Color, SetColor] = useState("red");
-
-    axios.defaults.withCredentials = true; 
-    // important for setting up cookies.
-
-    useEffect(() => {
-        inputEmailRef.current.focus();
-
-        const isServerAlive = async()=>{
-            try{
-                axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/isAlive`)
-                .then((res) => {
-                    if (res.status === 200) {
-                        SetColor("green")
-                        // console.log("server is alive",Color);
-                    }
-                })
-                .catch((err) => console.log("error"))
-            }
-            catch(error){
-                SetColor("red");
-            }
-        }
-
-        let interval = null;
-
-        if(Color==="red"){
-            interval = setInterval(() => {
-                isServerAlive();
-            },1000)
-        }
-
-        return () => clearInterval(interval);
-
-    }, [Color]);
-
+    
+    const [color, setColor] = useState("red");
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
 
+    // API Config
+    const API = axios.create({
+        baseURL: import.meta.env.VITE_BACKEND_URL_PROD,
+        withCredentials: true
+    });
+
+    // Server Health Check Logic
+    useEffect(() => {
+        inputEmailRef.current?.focus();
+
+        const checkServer = async () => {
+            try {
+                const res = await API.get('/api/v1/user/isAlive');
+                if (res.status === 200) setColor("green");
+            } catch (err) {
+                setColor("red");
+            }
+        };
+
+        // Initial check
+        checkServer();
+
+        // Polling interval (only if red)
+        const interval = setInterval(() => {
+            if (color === "red") checkServer();
+        }, 5000); // 5 seconds is gentler than 1 second
+
+        return () => clearInterval(interval);
+    }, [color]);
+
     const notify = (msg) => {
-        toast.info(msg, {
-            progressStyle: { background: "red" },
+        toast.error(msg, { // Changed to error for 'invalid details'
             theme: 'colored',
-            style: { background: "white", color: "red" },
+            position: "top-right"
         });
     }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/login`, {
+            const resp = await API.post('/api/v1/user/login', {
                 email: formData.username,
                 password: formData.password
-            })
-            console.log(resp?.data?.data?.user?.email)
-            if (resp.status === 200) {
-                dispatch(setuserInfo(resp?.data?.data?.user?.email))
-                dispatch(setisUser(true))
-                localStorage.setItem("user-info", JSON.stringify({email:formData.username}));
-                navigate("/")
-            }
-        }
-        catch (e) {
-            console.log("error")
-            notify("invalid details")
-        }
+            });
 
+            if (resp.status === 200) {
+                const userEmail = resp?.data?.data?.user?.email;
+                dispatch(setuserInfo(userEmail));
+                dispatch(setisUser(true));
+                localStorage.setItem("user-info", JSON.stringify({ email: userEmail }));
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+            notify("Invalid credentials. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className='login'>
-            <ToastContainer />
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        placeholder="johndoe@gmail.com"
-                        ref={inputEmailRef}
-                    />
-                </div>
+        <div className='login-container'>
+            <div className='login-card'>
+                <ToastContainer />
+                
+                <header>
+                    <h2>Welcome Back</h2>
+                    <p className="subtitle">Please enter your details</p>
+                </header>
 
-                <div>
-                    <label>Password </label>
-                    <input
-                        type='password'
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="password"
-                        className='password'
-                    />
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            placeholder="johndoe@gmail.com"
+                            ref={inputEmailRef}
+                            required
+                        />
+                    </div>
 
-                <button type="submit">
-                    Login
+                    <div className="input-group">
+                        <label>Password</label>
+                        <input
+                            type='password'
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="login-btn" disabled={loading}>
+                        {loading ? "Authenticating..." : "Login"}
+                    </button>
+                </form>
+
+                <div className="divider"><span>OR</span></div>
+
+                <button
+                    type="button" 
+                    className='register-link'
+                    onClick={() => navigate("/register")}
+                >
+                    Don't have an account? <strong>Sign Up</strong>
                 </button>
-            </form>
 
-            <button
-                type="submit"
-                className='register'
-                onClick={() => navigate("/register")}
-            >
-                Sign Up
-            </button>
-            <div className='other-ways'>
-            <button
-                className='forgot'
-                onClick={() => navigate("/forgotPassword")}
-            >
-                <FiHelpCircle />
-                <p className='p-tag'>Forgot Password</p>
-            </button>
-            <a
-                className='googleLogin'
-                href={`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/auth/google`}
-            >
-                <FcGoogle />
-                <p className='p-tag'>Login with Google</p>
-            </a>
+                <div className='footer-actions'>
+                    <button className='action-btn' onClick={() => navigate("/forgotPassword")}>
+                        <FiHelpCircle />
+                        <span className='p-tag'>Help</span>
+                    </button>
+                    
+                    <a className='action-btn google' href={`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/auth/google`}>
+                        <FcGoogle />
+                        <span className='p-tag'>Google</span>
+                    </a>
+                </div>
+
+                <div className="status-indicator">
+                    <span>Server Status</span>
+                    <ColoredCircle color={color} />
+                </div>
             </div>
-            <ColoredCircle color={Color} className='circle'/>
         </div>
     );
 };

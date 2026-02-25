@@ -1,229 +1,157 @@
-import { useState,useEffect,useRef} from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import {useDispatch} from "react-redux"
-// import { setisUser } from '../components/store';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setisUser } from '../../../store/index';
 import axios from "axios";
-import './signup.css';
-import {ToastContainer,toast} from "react-toastify";
-
+import { ToastContainer, toast } from "react-toastify";
 import { CiCircleInfo } from "react-icons/ci";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './signup.css';
 
-
-function Signup() { 
-    const [showPassword, setShowPassword] = useState(false);
-    const dispatch = useDispatch();
-    useEffect(()=>{
-        Ref.current.focus();
-    },[])
-
-    const Ref=useRef();
-    const navigate = useNavigate();
-
-    const[vanish,Setvanish]=useState(true);
-    const[showVerify,SetshowVerify]=useState(false);
-
+function Signup() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         passwordConfirm: '',
-        accountType:'normal'
+        accountType: 'normal'
     });
-
-    const notify=(msg)=>{
-        toast.info(msg, {
-            progressStyle: { background: "red" },
-            theme: 'colored',
-            style: { background: "white", color: "red" },
-        });
-    }
-
-    const notify1=(msg)=>{
-        toast.info(msg, {
-            progressStyle: { background: "green" },
-            theme: 'colored',
-            style: { background: "white", color: "green" },
-        });
-    }
+    const [code, setCode] = useState("");
+    const [vanish, setVanish] = useState(true);
+    const [showVerify, setShowVerify] = useState(false);
     
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const Ref = useRef();
+
+    useEffect(() => {
+        Ref.current.focus();
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-        ...formData,
-        [name]: value,
-        });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const [code,Setcode]=useState("");
+    // Helper for Toast Styles
+    const notify = (msg, type = 'error') => {
+        const config = {
+            theme: 'colored',
+            style: type === 'error' ? { background: "#fff5f5", color: "#e53e3e" } : { background: "#f0fff4", color: "#38a169" }
+        };
+        type === 'error' ? toast.error(msg, config) : toast.success(msg, config);
+    };
 
     const verifyPassword = (password) => {
-        // Define regular expressions for lowercase, uppercase, numbers, and special characters
-        const lowercaseRegex = /[a-z]/;
-        const uppercaseRegex = /[A-Z]/;
-        const numberRegex = /[0-9]/;
-        const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    
-        // Check if password meets all criteria
-        const hasLowercase = lowercaseRegex.test(password);   // true
-        const hasUppercase = uppercaseRegex.test(password);   // true
-        const hasNumber = numberRegex.test(password);         // true
-        const hasSpecialChar = specialCharRegex.test(password); // true
-        const isLengthValid = password.length >= 8;           // true
-    
-        return (hasLowercase && hasUppercase && hasNumber && hasSpecialChar && isLengthValid); // true
-    };
-    
-    
-
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        const isPasswordValid = verifyPassword(formData.password);
-        if(!isPasswordValid){
-            return notify("Password Criteria Error!")
-        }
-        else{
-                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/signup`,formData)
-
-                if(!response.data.error){
-                notify1("Successful SignUp !!")
-                // dispatch(setisUser(true));
-                localStorage.setItem("user-info",JSON.stringify(formData.name))
-                navigate("/login");
-                }
-                else{
-                    notify("Error,sign up again")
-                }
-            }
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+        return regex.test(password);
     };
 
-    const handleSubmitCode=async(e)=>{
+    const handleSendCode = async (e) => {
         e.preventDefault();
-        if(formData.name && formData.email){
-            try{
-                const resp= await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/sendCode`,{
-                    name:formData.name,
-                    email:formData.email
-                })
-    
-                console.log("broooooooooo",resp)
-                if(resp.status===200){
-                    SetshowVerify(true)
-                    notify1("Please Check Your email !!");
-                }
-                else{
-                    console.log("Error")
-                    notify("Error,try again !!")
-                }
+        if (!formData.name || !formData.email) return notify("Please fill in Name and Email");
+        
+        try {
+            const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/sendCode`, {
+                name: formData.name,
+                email: formData.email
+            });
+            if (resp.status === 200) {
+                setShowVerify(true);
+                notify("Verification code sent to email!", "success");
             }
-            catch(e){
-                notify("Email already exists !!")
-            }
+        } catch (err) {
+            notify("Email already exists or server error");
         }
-        else{
-            notify('Fill Details !!')
-        }
-    }
+    };
 
-    const handleCheckValid=async(e)=>{
+    const handleVerifyCode = async (e) => {
         e.preventDefault();
-        if(formData.email){
-            try{
-                const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/verifyCode`,{
-                    email:formData.email,
-                    code:code
-                })
-    
-                if(resp.status===200){
-                    Setvanish(false)
-                    SetshowVerify(false)
-                    notify1("Verified !!")
-                }
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/verifyCode`, {
+                email: formData.email,
+                code: code
+            });
+            if (response.status === 200) {
+                setVanish(false);
+                setShowVerify(false);
+                notify("Email Verified!", "success");
             }
-            catch(e){
-                    console.log("error")
-                    notify("Invalid Code !!")
-                }
-            }
-        else{
-                // console.log("how bro ????")
-                notify("Email Misiing !!")
+        } catch (err) {
+            notify("Invalid verification code");
         }
-    }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (formData.password !== formData.passwordConfirm) return notify("Passwords do not match");
+        if (!verifyPassword(formData.password)) return notify("Password does not meet criteria");
+
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/signup`, formData);
+            if (!response.data.error) {
+                notify("Account created!", "success");
+                dispatch(setisUser(true));
+                localStorage.setItem("user-info", JSON.stringify(formData.name));
+                navigate("/");
+            }
+        } catch (err) {
+            notify("Sign up failed, please try again");
+        }
+    };
 
     return (
-        <>
-        <ToastContainer />
-        <div className="signup-form-container">
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSubmit} className='fields'>
-            <div>
-            <label htmlFor="name">Name</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder='john Doe'
-                ref={Ref}
-            />
-            </div>
-            <div>
-            <label htmlFor="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder='johndoe@gmail.com'
-            />
-            </div>
+        <div className="signup-page">
+            <ToastContainer position="top-center" autoClose={3000} />
+            <div className="signup-card">
+                <h2>Create Account</h2>
+                <p className="subtitle">Join us to start your journey</p>
 
-            {vanish &&<div className='vanish'>
-                    <input
-                        type="text"
-                        name="code"
-                        value={code}
-                        onChange={(e)=>Setcode(e.target.value)}
-                        placeholder='enter code...'
-                    />
-                <button type="submit" onClick={handleSubmitCode}>Send Code</button>
-            </div>}
-            {showVerify && <div className='vanishButton' onClick={handleCheckValid}>Verify</div>}
+                <form onSubmit={handleSubmit} className="signup-form">
+                    <div className="input-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" ref={Ref} required />
+                    </div>
 
-            {!vanish && <div className='password'>
-            <label htmlFor="password">Password</label>
-            <input
-                type='password'
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder='minimum length is eight'
-            />
+                    <div className="input-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" required disabled={!vanish} />
+                    </div>
+
+                    {vanish && (
+                        <div className="verification-section">
+                            <div className="code-row">
+                                <input type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Enter 6-digit code" />
+                                <button type="button" className="btn-send" onClick={handleSendCode}>Send Code</button>
+                            </div>
+                            {showVerify && (
+                                <button type="button" className="btn-verify" onClick={handleVerifyCode}>Verify Email</button>
+                            )}
+                        </div>
+                    )}
+
+                    {!vanish && (
+                        <>
+                            <div className="input-group">
+                                <label>Password</label>
+                                <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required />
+                            </div>
+                            <div className="input-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleChange} placeholder="••••••••" required />
+                            </div>
+                            
+                            <div className="info-box">
+                                <CiCircleInfo className="info-icon" />
+                                <p>Password must be 8+ chars with uppercase, lowercase, number, and symbol.</p>
+                            </div>
+
+                            <button type="submit" className="btn-submit">Sign Up</button>
+                        </>
+                    )}
+                </form>
             </div>
-            }
-            {!vanish && <div className='password'>
-            <label htmlFor="passwordConfirm">Confirm</label>
-            <input
-                type= 'password'
-                id="passwordConfirm"
-                name="passwordConfirm"
-                value={formData.passwordConfirm}
-                onChange={handleChange}
-                placeholder='confirm password'
-            />
-            </div>}
-        {!vanish && <CiCircleInfo size={30} className='password-info'/>}
-        <p className='password-show'>Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.</p>
-        {!vanish && <button type="submit">Sign Up</button>}
-        </form>
         </div>
-        </>
     );
 }
-
 
 export default Signup;

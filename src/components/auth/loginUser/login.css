@@ -1,170 +1,108 @@
-.login{
-    margin: 1rem auto;
+.login-container {
     display: flex;
-    align-items:center;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    display: flex;
     flex-direction: column;
-    border:1px solid blue;
-    border-radius: 10px;
-    gap:1rem;
-    min-height: 50vh;
-    padding: 10px;
-    width:60%;
-    min-width: 380px;
-    box-shadow: 2px 2px 3px rgb(21, 19, 131),
-    -2px -2px 3px rgb(47, 96, 187);
+    gap: 1.5rem;
     position: relative;
+    border: 1px solid #e1e1e1;
 }
 
-.login form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:100%;
-    gap:1rem;
-    min-height: 25vh;
+header { text-align: center; }
+header h2 { margin-bottom: 0.5rem; color: #1a1a1a; }
+.subtitle { color: #666; font-size: 0.9rem; }
+
+form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.input-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.input-group label { font-weight: 500; font-size: 0.9rem; }
+
+.input-group input {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-.login form >div{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width:80%;
-    
+.input-group input:focus {
+    border-color: blue;
+    box-shadow: 0 0 0 2px rgba(0, 0, 255, 0.1);
 }
 
-.login form div label{
-    display: block;
-    color: black;
-    font-size: 1.2rem;
-}
-
-.login form div input{
-    display: block;
-    width:70%;
-    padding: 15px 5px;
-    font-size: 1rem;
+.login-btn {
+    background: blue;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
     border: none;
-    outline:2px solid blue;
-    border-radius: 20px;
+    transition: opacity 0.2s;
 }
 
-.login form div input:focus{
-    outline:3px solid blue;
+.login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #999;
+    font-size: 0.8rem;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eee;
+}
+.divider span { padding: 0 10px; }
+
+.register-link {
+    background: none;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
-.login form .login-btn{
+.footer-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.action-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-button[type="submit"]{
-    outline:1px solid black;
-    border:1px solid black;
-    width:40%;
-    border-radius: 25px;
-    background-color: rgb(16, 16, 201);
-    padding: 10px 5px;
-    margin-bottom: 5px;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #f9f9f9;
     cursor: pointer;
-    transition: all 0.25s ease-in-out;
-    margin: 0 auto;
-}
-
-button[type="submit"]:hover{
-    transform: scale(0.98);
-}
-
-.forgot{
-    cursor: pointer;
-    color:blue;
-    background-color: white;
-    border-radius: 10px;
-    font-size: 1.75rem;
-    border: none;
-}
-
-.googleLogin{
-    cursor: pointer;
-    color:blue;
-    background-color: white;
-    border-radius: 10px;
-    font-size: 1.75rem;
-    border: none;
-}
-
-.eye {
-    cursor: pointer;
-}
-
-.down{
-    color: rgb(255, 0, 0);
-}
-
-.up{
-    color: green;
-}
-
-.other-ways{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    width:100%;
-    gap:1rem
-}
-
-a{
     text-decoration: none;
+    color: #333;
 }
-.googleLogin{
+
+.status-indicator {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-}
-.p-tag{
-    font-size: 0.75rem;
-}
-
-@media screen and (max-width: 1920px) {
-    .other-ways{
-        width:100%;
-    }
-    form button[type="submit"]{
-        width:70%;
-        height: 3rem;
-
-    }
-    .login .register{
-        width:70%;
-        height: 3rem;
-    }
-}
-
-
-@media screen and (max-width: 768px) {
-    .login form div label{
-        font-size: 1rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .login{
-        width:90%;
-    }
-    .login form >div{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width:100%;
-    }
-        
-    .login form div input{
-        width:100%;
-        margin-left: 5px;
-    }
-    button[type="submit"]{
-        width:80%;
-    }
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 10px;
 }
