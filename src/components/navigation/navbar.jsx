@@ -23,7 +23,7 @@ const Navbar = () => {
                 <li>
                     <NavLink to="/blogs" onClick={() => setOpenMenu(!openMenu)}>Blogs</NavLink>
                 </li>
-                {isUser && (
+                {/* {isUser && (
                     <li
                         // onMouseEnter={() => setShowProfileMenu(true)}
                         onClick={()=>setShowProfileMenu(!showProfileMenu)}
@@ -43,7 +43,7 @@ const Navbar = () => {
                             </ul>
                         )}
                     </li>
-                )}
+                )} */}
                 {isUser && <li>
                     <NavLink to="/logout" onClick={() => setOpenMenu(!openMenu)}>Logout</NavLink>
                 </li>}

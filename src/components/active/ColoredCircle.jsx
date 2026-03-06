@@ -22,7 +22,7 @@ const ColoredCircle = ({ color }) => {
         return(
             <>
             <span className="colored-circle" style={styles} />
-            <p className="down">Server is Down reconnecting in {Time} sec</p>
+            <p className="down">Reconnecting in {Time} sec</p>
             </>
         ) 
     }
