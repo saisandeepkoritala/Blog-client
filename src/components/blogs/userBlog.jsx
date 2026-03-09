@@ -22,6 +22,7 @@ const UserBlog = (blog) => {
             }
             else{
                 console.log("something went wrong or no image")
+                
             }
         }
         getPic();

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setisUser, setuserInfo } from "../../../store";
 import ColoredCircle from '../../active/ColoredCircle';
-import { ToastContainer, toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { FiHelpCircle } from "react-icons/fi";
 import axios from "axios";
+import Notify from "../../Utils/Toast";
 import "./login.css";
 
 const Login = () => {
@@ -51,12 +51,6 @@ const Login = () => {
         return () => clearInterval(interval);
     }, [color]);
 
-    const notify = (msg) => {
-        toast.error(msg, { // Changed to error for 'invalid details'
-            theme: 'colored',
-            position: "top-right"
-        });
-    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -78,10 +72,11 @@ const Login = () => {
                 dispatch(setisUser(true));
                 localStorage.setItem("user-info", JSON.stringify({ email: userEmail }));
                 navigate("/");
+                Notify("Login successful! Welcome back.");
             }
         } catch (error) {
             console.error("Login Error:", error);
-            notify("Invalid credentials. Please try again.");
+            Notify("Invalid credentials. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -90,7 +85,6 @@ const Login = () => {
     return (
         <div className='login-container'>
             <div className='login-card'>
-                <ToastContainer />
                 
                 <header>
                     <h2>Welcome Back</h2>

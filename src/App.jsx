@@ -19,11 +19,14 @@ import MyBlogs from './components/blogs/MyBlogs';
 import About from './components/profile/About';
 import UpdatePassword from './components/password/UpdatePassword';
 
+import { ToastContainer} from "react-toastify";
+
 function App() {
 
   const isUser = useSelector((state) => state?.user?.isUser);
   return (
       <BrowserRouter>
+      <ToastContainer />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

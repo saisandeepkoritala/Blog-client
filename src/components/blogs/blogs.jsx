@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { ColorRing } from 'react-loader-spinner';
-import { ToastContainer, toast} from 'react-toastify';
+import Notify from '../Utils/Toast';
 // Fetch function that returns both data and status code
 const fetchBlogs = async () => {
     try {
@@ -31,21 +31,14 @@ const Blogs = () => {
 
     const user = useSelector((state) => state.user);
 
-    const notify = (msg, color) => {
-        toast.info(msg, {
-            progressStyle: { background: color },
-            theme: 'colored',
-            style: { background: "white", color: color },
-        });
-    }
 
     // Handle toast notifications for loading and error states
     useEffect(() => {
         if (isLoading) {
-            notify("Loading content .......", "green");
+            Notify("Loading content .......", "green");
         }
         if (isError) {
-            notify("Something went wrong .......", "red");
+            Notify("Something went wrong .......", "red");
         }
     }, [isLoading, isError]);
 
@@ -130,7 +123,6 @@ const Blogs = () => {
     return (
         <div className='blogs'>
             {cardsSection}
-            <ToastContainer/>
         </div>
     );
 }
