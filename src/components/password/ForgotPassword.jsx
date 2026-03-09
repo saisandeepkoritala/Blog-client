@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import axios from 'axios';
 import './ForgotPassword.css';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from "react-toastify";
+import Notify from '../Utils/Toast';
 import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPassword = () => {
@@ -51,13 +51,6 @@ const ForgotPassword = () => {
         }
     }
 
-    const notify = (msg) => {
-        toast.info(msg, {
-            progressStyle: { background: "green" },
-            theme: 'colored',
-            style: { background: "white", color: "green" },
-        });
-    }
 
     const handleSubmitEmail = () => {
         //1
@@ -67,10 +60,10 @@ const ForgotPassword = () => {
             setShowSubmit(false)
             setCodeSent(true)
             setReadOnly(true)
-            notify("OTP sent to your email!!")   
+            Notify("OTP sent to your email!!", "green")   
         }
         else{
-            notify("Email not found!!")
+            Notify("Email not found!!", "red")
         }
 
     }
@@ -82,28 +75,28 @@ const ForgotPassword = () => {
         if (result) {
             setCodeSent(false)
             setShowPassword(true)  
-            notify("Verification success!!") 
+            Notify("Verification success!!", "green") 
         }
         else{
-            notify("Invalid code!!")
+            Notify("Invalid code!!", "red")
         }
     }  
     
     const handleSubmitPassword = () => {
         //3
         if (password !== confirmPassword) {
-            notify("Passwords do not match!!")
+            Notify("Passwords do not match!!", "red")
             return;
         }
         console.log("submit password")
         const result = submitPassword();
         if (result) {
             console.log("password reset success")
-            notify("Password reset success")
+            Notify("Password reset success", "green")
             navigate("/passwordResetSuccess")
         }
         else{
-            notify("Password reset failed!!")
+            Notify("Password reset failed!!", "red")
         }
     }
     
@@ -132,7 +125,6 @@ const ForgotPassword = () => {
                 {showPassword && <button 
                 type='submit' onClick={handleSubmitPassword}>Submit</button>}
             </div>
-            <ToastContainer />
         </div>
     )
 }

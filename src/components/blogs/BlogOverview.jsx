@@ -3,6 +3,7 @@ import './BlogOverview.css'
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { useSelector } from 'react-redux';
+import Notify from '../Utils/Toast';
 
 const BlogOverview = () => {
     axios.defaults.withCredentials = true;
@@ -31,9 +32,11 @@ const BlogOverview = () => {
             localStorage.removeItem("blog-tags");
             localStorage.removeItem("blog-title");
             console.log("blog posted successfully");
+            Notify("Blog posted successfully!");
         }
         else{
             console.log("something went wrong")
+            Notify("Failed to post blog. Please try again.");
         }
     }
 

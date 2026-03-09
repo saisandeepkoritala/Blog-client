@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setisUser } from '../../../store/index';
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import { CiCircleInfo } from "react-icons/ci";
 import './signup.css';
 
@@ -101,7 +101,6 @@ function Signup() {
 
     return (
         <div className="signup-page">
-            <ToastContainer position="top-center" autoClose={3000} />
             <div className="signup-card">
                 <h2>Create Account</h2>
                 <p className="subtitle">Join us to start your journey</p>

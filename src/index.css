@@ -5,3 +5,20 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Target the toast container on small screens */
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: fit-content !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    padding: 0 20px !important;
+  }
+
+  .Toastify__toast {
+    margin-bottom: 1rem !important;
+    border-radius: 12px !important; /* Makes it look 'crispy' and modern */
+    min-width: 200px !important;
+    max-width: 90vw !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  }
+}
