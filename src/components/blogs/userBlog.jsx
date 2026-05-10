@@ -5,10 +5,6 @@ import axios from 'axios';
 import User from '../../assets/user.webp';
 
 const UserBlog = (blog) => {
-    // console.log(blog)
-    // console.log(blog.email)
-    // console.log(blog.body)
-
     const [Pic,setPic] = useState(User)
 
     useEffect(() => {
@@ -16,13 +12,12 @@ const UserBlog = (blog) => {
             const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/profilePic`,{
                 email:blog.email
             })
-            // console.log("hii",resp?.data?.pic)
+
             if(resp.status === 200){
                 setPic(resp?.data?.pic)
             }
             else{
                 console.log("something went wrong or no image")
-                
             }
         }
         getPic();

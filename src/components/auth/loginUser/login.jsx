@@ -135,7 +135,7 @@ const Login = () => {
                 <div className='footer-actions'>
                     <button className='action-btn' onClick={() => navigate("/forgotPassword")}>
                         <FiHelpCircle />
-                        <span className='p-tag'>Help</span>
+                        <span className='p-tag'>Forgot Password</span>
                     </button>
                     
                     <a className='action-btn google' href={`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/auth/google`}>

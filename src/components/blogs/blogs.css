@@ -1,79 +1,47 @@
-.blogs{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content:flex-start;
-    gap: 1rem;
-    padding: 1rem;
-    margin-left: 10vh;
-    text-decoration: none;
-    color: black;
+.blogs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.allBlogs{
+.allBlogs {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: #1e293b;
     display: flex;
-    align-items: flex-start;
-    justify-content:flex-start;
     flex-direction: column;
     gap: 1rem;
-    width: 45%;
-    min-height:350px;
-    border-radius: 10px;
-    padding: 1rem;
-    background-color: white;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-    color: black;
+}
+
+.allBlogs:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    color: #64748b;
 }
 
 .show-tags{
     display: flex;
-    align-items: flex-start;
+    align-items:flex-start;
     justify-content:flex-start;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    width: 100%;
+    gap:10px;
 }
-
-.show-tags .tag{
-    padding: 0.5rem 1.5rem;
-    border-radius: 25px;
-    background-color: #599de6;
-    color: white;
-    font-size: 0.8rem;
+.tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background-color: #eff6ff;
+    color: #3b82f6;
+    font-size: 0.75rem;
     font-weight: 600;
-    text-transform: capitalize;
 }
-
-.loader{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: 75vh;
-}
-
-/* In your blogs.css or a separate CSS file */
-.toast-container {
-    width: 50%;
-}
-
-@media screen and (max-width: 768px) {
-    .blogs{
-        margin-left: 0;
-    }
-    .allBlogs{
-        width: 100%;
-    }
-    .toast-container {
-        width: 50%; /* or any other width for larger screens */
-    }
-}
-
-@media screen and (max-width: 468px) {
-    .toast-container {
-        width: 50%; /* or any other width for larger screens */
-    }
-}
-

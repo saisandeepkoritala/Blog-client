@@ -288,7 +288,7 @@ const CreateBlogPage = () => {
                 placeholder='Enter tags'
                 onChange={(e) => SetTag(e.target.value)}
             />
-            <button type="button" onClick={() => addTag(Tag)}>Add tag</button>
+            <button type="button" className="add-more-tags" onClick={() => addTag(Tag)}>Add tag</button>
         </form>
         <div className='tag-container'>
         {Tags?.map((tag, index) => (

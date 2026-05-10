@@ -1,130 +1,70 @@
-import React, { useEffect } from 'react';
-import './blogs.css';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { ColorRing } from 'react-loader-spinner';
-import Notify from '../Utils/Toast';
-// Fetch function that returns both data and status code
+import './blogs.css';
+
 const fetchBlogs = async () => {
     try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/allBlogs`, { 
             withCredentials: true 
         });
-        return { data: response.data.allBlogs, status: response.status };
+        
+        return response.data.allBlogs;
     } catch (error) {
-        // Handle the error and return a custom status or rethrow the error
-        if (error.response) {
-            return { data: [], status: error.response.status };
-        } else {
-            throw new Error('Network error');
-        }
+        // Log the error for debugging purposes
+        console.error("Error fetching blogs:", error);
+        throw new Error(error.response?.data?.message || "Failed to fetch blogs");
     }
 };
 
+const Loader = ({ message }) => (
+    <div className='loader-container'>
+        <ColorRing
+            visible={true}
+            height="100"
+            width="100"
+            // Using a palette of professional blues
+            colors={['#3b82f6', '#60a5fa', '#93c5fd', '#60a5fa', '#3b82f6']}
+        />
+        <p className="loader-text">{message}</p>
+    </div>
+);
+
 const Blogs = () => {
-    const { data: blogs = [], isLoading, isError, error } = useQuery({
+    const { data: blogs = [], isLoading, isError } = useQuery({
         queryKey: ['blogs'],
         queryFn: fetchBlogs,
     });
 
     const user = useSelector((state) => state.user);
 
-
-    // Handle toast notifications for loading and error states
-    useEffect(() => {
-        if (isLoading) {
-            Notify("Loading content .......", "green");
-        }
-        if (isError) {
-            Notify("Something went wrong .......", "red");
-        }
-    }, [isLoading, isError]);
-
-    if (isLoading) {
-        return (
-            <div className='loader'>
-                <ColorRing
-                    visible={true}
-                    height="80"
-                    width="80"
-                    ariaLabel="color-ring-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="color-ring-wrapper"
-                    colors={['#0000FF', '#4169E1', '#4682B4', '#1E90FF', '#6495ED', '#00BFFF', '#5F9EA0', '#87CEEB', '#B0E0E6', '#ADD8E6']}
-                />
-                <p>Loading content .......</p>
-            </div>
-        );
-    }
-
-    if (isError) {
-        return (
-            <div className='loader'>
-                <ColorRing
-                    visible={true}
-                    height="80"
-                    width="80"
-                    ariaLabel="color-ring-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="color-ring-wrapper"
-                    colors={['#0000FF', '#4169E1', '#4682B4', '#1E90FF', '#6495ED', '#00BFFF', '#5F9EA0', '#87CEEB', '#B0E0E6', '#ADD8E6']}
-                />
-                <p>Something went wrong .......</p>
-            </div>
-        );
-    }
-
-    if (blogs.length === 0) {
-        return (
-            <div>
-                <ColorRing
-                    visible={true}
-                    height="80"
-                    width="80"
-                    ariaLabel="color-ring-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="color-ring-wrapper"
-                    colors={['#0000FF', '#4169E1', '#4682B4', '#1E90FF', '#6495ED', '#00BFFF', '#5F9EA0', '#87CEEB', '#B0E0E6', '#ADD8E6']}
-                />
-                <p>No blogs available at the moment.</p>
-            </div>
-        );
-    }
-    console.log(blogs);
-
-    const cardsSection = blogs?.data.map((item, i) => {
-        const dateStr = new Date(item.createdAt);
-
-        return (
-            <Link key={i} className='allBlogs' to={user.isUser ? `/blog/${item._id}` : `/login`}>
-                <h4>{item.title}</h4>
-                <div>
-                    {item.body.map((bodyItem, j) => {
-                        if (j >= 2) return null;
-                        return (
-                            <div 
-                                dangerouslySetInnerHTML={{ __html: bodyItem.text.substring(0, 200) + ", see more..." }} 
-                                className='text' 
-                                key={j} 
-                            />
-                        );
-                    })}
-                </div>
-                <p className='author'><strong>By </strong> {item.email}</p>
-                <p className='date'><strong>Posted on</strong> {item.createdAt.substring(0, 10)}</p>
-                <p className='date'><strong>Posted at</strong> {dateStr.toTimeString().substring(0, 5)}</p>
-                <div className='show-tags'>{item.tags.map((tag) => (<div className='tag' key={tag}>{tag}</div>))}</div>
-            </Link>
-        );
-    });
+    if (isLoading) return <Loader message="Loading content..." />;
+    if (isError) return <Loader message="Something went wrong." />;
+    if (blogs.length === 0) return <Loader message="No blogs available." />;
 
     return (
         <div className='blogs'>
-            {cardsSection}
+            {blogs.map((item) => (
+                <Link key={item._id} className='allBlogs' to={user.isUser ? `/blog/${item._id}` : `/login`}>
+                    <h4>{item.title}</h4>
+                    <div className='text-preview'>
+                        {/* Simple slice to show snippet without breaking HTML logic */}
+                        <div dangerouslySetInnerHTML={{ __html: `${item.body[0]?.text.substring(0, 150)}...` }} />
+                    </div>
+                    <div className='blog-meta'>
+                        <p className='author'><strong>By:</strong> {item.email}</p>
+                        <p className='date'>{new Date(item.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <div className='show-tags'>
+                        {item.tags.map((tag) => <span className='tag' key={tag}>{tag}</span>)}
+                    </div>
+                </Link>
+            ))}
         </div>
     );
-}
+};
 
 export default Blogs;

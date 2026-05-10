@@ -89,9 +89,7 @@ function Signup() {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL_PROD}/api/v1/user/signup`, formData);
             if (!response.data.error) {
-                notify("Account created!", "success");
-                dispatch(setisUser(true));
-                localStorage.setItem("user-info", JSON.stringify(formData.name));
+                notify("Account created!,please login", "success");
                 navigate("/");
             }
         } catch (err) {
