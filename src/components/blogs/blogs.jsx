@@ -26,7 +26,7 @@ const Loader = ({ message }) => (
             visible={true}
             height="100"
             width="100"
-            // Using a palette of professional blues
+            // Using a palette of professional blues for loading
             colors={['#3b82f6', '#60a5fa', '#93c5fd', '#60a5fa', '#3b82f6']}
         />
         <p className="loader-text">{message}</p>
