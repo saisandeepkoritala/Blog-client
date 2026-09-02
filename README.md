@@ -8,7 +8,7 @@ Welcome to the client-side application of our Full-Stack Blog Platform. This is 
 *   **Email Verification Flow:** Dedicated landing pages for account verification status.
 *   **Blog Dashboard:** Create, read, update, and delete your own blogs with a rich text preview.
 *   **Feed & Discovery:** Public feed to browse and read articles written by other creators.
-*   **Responsive Design:** Fully optimized for Mobile, Tablet, and Desktop screens.
+*   **Responsive Design:** Fully optimized for Mobile, Tablet, and Desktop devices.
 
 ## 🛠️ Tech Stack
 
